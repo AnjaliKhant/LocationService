@@ -1,3 +1,6 @@
+<% unless @tag_type.nil? %>
+<h2>Places with Tag <%= @tag_type %>.</h2>
+<% end %>
 <table>
     <thead>
         <tr>
@@ -8,13 +11,17 @@
         </tr>
     </thead>
     <tbody>
-    <% @places.each do |record| %>
-        <tr>
-            <td><%= record.zip_code %></td>
-            <td><%= record.name %></td>
-            <td><%= record.address %></td>
-            <td><%= record.country %></td>
-        </tr>
+    <% if @places.present? %>
+        <% @places.each do |record| %>
+            <tr>
+                <td><%= record.zip_code %></td>
+                <td><%= record.name %></td>
+                <td><%= record.address %></td>
+                <td><%= record.country %></td>
+            </tr>
+        <% end %>
+    <% else %>
+        <tr><td colspan='4'>No Data Available</td></tr>
     <% end %>
     </tbody>
 </table>
