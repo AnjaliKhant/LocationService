@@ -3,7 +3,10 @@ Rails.application.routes.draw do
   root 'places#index'
 
   resources :places do
-    collection { post :import }
+    collection do
+      post :import
+      get  :search
+    end
   end
 
   get "tags/:type", to: "tags#index", as: "tags"
