@@ -1,0 +1,20 @@
+<table>
+    <thead>
+        <tr>
+            <th>zip_code</th>
+            <th>name</th>
+            <th>address</th>
+            <th>country</th>
+        </tr>
+    </thead>
+    <tbody>
+    <% @places.each do |record| %>
+        <tr>
+            <td><%= record.zip_code %></td>
+            <td><%= record.name %></td>
+            <td><%= record.address %></td>
+            <td><%= record.country %></td>
+        </tr>
+    <% end %>
+    </tbody>
+</table>

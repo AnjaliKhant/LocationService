@@ -5,4 +5,6 @@ Rails.application.routes.draw do
   resources :places do
     collection { post :import }
   end
+
+  get "tags/:type", to: "tags#index", as: "tags"
 end
