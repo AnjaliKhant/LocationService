@@ -10,29 +10,22 @@ class Place < ApplicationRecord
             obj.zip_code = geo.postal_code
             obj.address = geo.address
         end
-      end
+    end
 
     after_validation :reverse_geocode
 
     def self.import(file)
         CSV.foreach(file.path, headers: true) do |row|
-            # place = Place.find_or_create_by!(name: row['name'], latitude: row['lat'] ,longitude: row['lon'])
-            place = Place.build_from_csv(row)
-            # place.tag.build(tag_0: row['tag-0'], tag_1: row['tag-1'], tag_2: row['tag-2'], tag_3: row['tag-3'])
-            if place.valid?
-                place.save
+            place = Place.find_by(name: row['name'])
+            if place.nil?
+                place = Place.create!(name: row['name'], latitude: row['lat'] ,longitude: row['lon'])
+                place.valid?
+                place.create_tag(tag_0: row[3], tag_1: row[4], tag_2: row[5], tag_3: row[6])
             else
-                @errors << row
+                place.update(name: row['name'], latitude: row['lat'] ,longitude: row['lon'])
+                place.tag.destroy
+                place.create_tag(tag_0: row[3], tag_1: row[4], tag_2: row[5], tag_3: row[6])
             end
         end
-    end
-
-    def self.build_from_csv(row)
-        # find existing customer from name or create new
-        place = find_or_initialize_by(name: row[0])
-        place.attributes ={:name => row[0],
-                          :longitude => row[1],
-                          :latitude => row[2]}
-        return place
     end
 end
